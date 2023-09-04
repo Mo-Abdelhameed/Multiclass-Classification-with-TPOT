@@ -28,7 +28,7 @@ def test_train_predict_model(sample_train_data, sample_test_data, schema_provide
     assert predictions.shape == (sample_test_data.shape[0],)
 
     proba_predictions = Classifier.predict_with_model(classifier, sample_test_data, return_proba=True)
-    assert proba_predictions.shape == (sample_test_data.shape[0], 2)
+    assert proba_predictions.shape == (sample_test_data.shape[0], 3)
 
     classifier.save(PREDICTOR_DIR_PATH)
     assert os.path.exists(os.path.join(PREDICTOR_DIR_PATH, 'predictor.joblib'))
