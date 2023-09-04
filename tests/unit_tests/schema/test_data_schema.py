@@ -30,7 +30,7 @@ def test_init(schema_provider):
     assert schema.input_data_format == "CSV"
     assert schema.id == "id"
     assert schema.target == "target_field"
-    assert schema.target_classes == ["0", "1"]
+    assert schema.target_classes == ["0", "1", "2"]
     assert schema.numeric_features == ["numeric_feature_1", "numeric_feature_2"]
     assert schema.categorical_features == ["categorical_feature_1", "categorical_feature_2"]
     assert schema.features == ["numeric_feature_1", "numeric_feature_2", "categorical_feature_1", "categorical_feature_2"]

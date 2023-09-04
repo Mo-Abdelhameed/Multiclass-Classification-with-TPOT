@@ -9,7 +9,7 @@ def test_key():
     test_key_df = pd.DataFrame(
         {
             "id": [1, 2, 3, 4],
-            "target_field": ["A", "B", "A", "B"],
+            "target_field": ["0", "1", "1", "2"],
         }
     )
     return test_key_df
@@ -22,20 +22,12 @@ def predictions():
         {
             "id": [1, 2, 3, 4],
             "0": [0.8, 0.1, 0.8, 0.1],
-            "1": [0.2, 0.8, 0.1, 0.9]
+            "1": [0.1, 0.1, 0.1, 0.0],
+            "2": [0.1, 0.8, 0.1, 0.9],
+
         }
     )
     return valid_predictions_df
-
-
-# define a valid predictions DataFrame
-valid_predictions = pd.DataFrame(
-    {
-        "id": [1, 2, 3, 4, 5],
-        "0": [0.9, 0.2, 0.8, 0.1, 0.85],
-        "1": [0.1, 0.8, 0.2, 0.9, 0.15],
-    }
-)
 
 
 def test_validate_data_with_valid_data(schema_provider, predictions):
