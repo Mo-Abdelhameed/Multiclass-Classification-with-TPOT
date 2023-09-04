@@ -1,4 +1,4 @@
-# Binary-Classification-with-TPOT
+# Multiclass-Classification-with-TPOT
 
 ## Project Description
 
