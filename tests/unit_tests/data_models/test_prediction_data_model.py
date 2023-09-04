@@ -1,5 +1,6 @@
 import pandas as pd
 import pytest
+
 from src.data_models.prediction_data_model import validate_predictions
 
 
@@ -24,7 +25,6 @@ def predictions():
             "0": [0.8, 0.1, 0.8, 0.1],
             "1": [0.1, 0.1, 0.1, 0.0],
             "2": [0.1, 0.8, 0.1, 0.9],
-
         }
     )
     return valid_predictions_df

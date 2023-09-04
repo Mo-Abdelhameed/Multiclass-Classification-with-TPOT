@@ -5,10 +5,10 @@ import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
+from src.config import paths
 from src.serve import create_app
 from src.serve_utils import get_model_resources
 from src.train import run_training
-from src.config import paths
 from src.utils import read_json_as_dict
 
 
@@ -53,16 +53,16 @@ def saved_schema_dir():
 
 @pytest.fixture
 def predictor_dir(tmpdir):
-    return tmpdir.mkdir('predictor')
+    return tmpdir.mkdir("predictor")
 
 
 @pytest.fixture
 def app(
-        input_schema_dir: str,
-        train_dir: str,
-        saved_schema_dir: str,
-        predictor_dir: str,
-        config_file_paths_dict: dict,
+    input_schema_dir: str,
+    train_dir: str,
+    saved_schema_dir: str,
+    predictor_dir: str,
+    config_file_paths_dict: dict,
 ):
     """
     Define a fixture for the test app.

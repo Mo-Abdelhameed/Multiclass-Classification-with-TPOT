@@ -1,21 +1,31 @@
 import pandas as pd
-from schema.data_schema import MulticlassClassificationSchema
-from preprocessing.preprocess import impute_numeric, impute_categorical, encode, normalize
-from joblib import load, dump
+from joblib import dump, load
+
 from config import paths
+from preprocessing.preprocess import (
+    encode,
+    impute_categorical,
+    impute_numeric,
+    normalize,
+)
+from schema.data_schema import MulticlassClassificationSchema
 
 
-def run_pipeline(input_data: pd.DataFrame, schema: MulticlassClassificationSchema, training: bool = True) -> pd.DataFrame:
+def run_pipeline(
+    input_data: pd.DataFrame,
+    schema: MulticlassClassificationSchema,
+    training: bool = True,
+) -> pd.DataFrame:
     """
-        Apply transformations to the input data (Imputations, encoding and normalization).
+    Apply transformations to the input data (Imputations, encoding and normalization).
 
-        Args:
-            input_data (pd.DataFrame): Data to be processed.
-            schema (MulticlassClassificationSchema): MulticlassClassificationSchema object carrying data about the schema
-            training (bool): Should be set to true if the data is for the training process.
-        Returns:
-            The data after applying the transformations
-        """
+    Args:
+        input_data (pd.DataFrame): Data to be processed.
+        schema (MulticlassClassificationSchema): MulticlassClassificationSchema object carrying data about the schema
+        training (bool): Should be set to true if the data is for the training process.
+    Returns:
+        The data after applying the transformations
+    """
     if training:
         imputation_dict = {}
         for f in schema.categorical_features:
@@ -33,8 +43,10 @@ def run_pipeline(input_data: pd.DataFrame, schema: MulticlassClassificationSchem
     else:
         imputation_dict = load(paths.IMPUTATION_FILE_PATH)
         for f in schema.features:
-            input_data[f].fillna(imputation_dict.get(f, input_data[f].mode()[0]), inplace=True)
-        input_data = normalize(input_data, schema, scaler='predict')
-        input_data = encode(input_data, schema, encoder='predict')
+            input_data[f].fillna(
+                imputation_dict.get(f, input_data[f].mode()[0]), inplace=True
+            )
+        input_data = normalize(input_data, schema, scaler="predict")
+        input_data = encode(input_data, schema, encoder="predict")
 
     return input_data

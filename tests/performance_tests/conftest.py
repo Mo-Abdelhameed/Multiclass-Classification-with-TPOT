@@ -1,10 +1,12 @@
-import os
 import json
+import os
+
 import pytest
+from fastapi.testclient import TestClient
+
+from src.serve import create_app
 from src.serve_utils import get_model_resources
 from src.train import run_training
-from fastapi.testclient import TestClient
-from src.serve import create_app
 
 
 @pytest.fixture

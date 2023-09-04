@@ -16,7 +16,8 @@ def get_predictions_validator(schema: MulticlassClassificationSchema) -> BaseMod
     If any of these checks fail, the validator will raise a ValueError.
 
     Args:
-        schema (MulticlassClassificationSchema): An instance of MulticlassClassificationSchema.
+        schema (MulticlassClassificationSchema):
+        An instance of MulticlassClassificationSchema.
 
     Returns:
         BaseModel: A dynamic Pydantic BaseModel class for data validation.
@@ -125,7 +126,7 @@ if __name__ == "__main__":
             "id": [1, 2, 3, 4, 5],
             "A": [0.9, 0.2, 0.8, 0.1, 0.85],
             "B": [0.1, 0.8, 0.2, 0.9, 0.15],
-            "C": [0, 0, 0, 0, 0]
+            "C": [0, 0, 0, 0, 0],
         }
     )
 

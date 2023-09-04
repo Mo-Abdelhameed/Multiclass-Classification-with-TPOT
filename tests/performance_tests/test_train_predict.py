@@ -59,7 +59,6 @@ def run_training_and_record(
     tmpdir,
     input_schema_dir: str,
     train_dir: str,
-
 ) -> Dict[str, Union[str, float]]:
     """Run training process and record the memory usage and execution time.
 
@@ -108,10 +107,7 @@ def run_training_and_record(
 
 
 def run_prediction_and_record(
-    tmpdir,
-    predictor_dir_path: str,
-    test_dir: str,
-    input_schema_dir: str
+    tmpdir, predictor_dir_path: str, test_dir: str, input_schema_dir: str
 ) -> Tuple[str, float, float]:
     """Run prediction process and record the memory usage and execution time.
 
@@ -139,7 +135,7 @@ def run_prediction_and_record(
         predictor_dir=predictor_dir_path,
         predictions_file_path=predictions_file_path,
         input_schema_dir=input_schema_dir,
-        return_proba=True
+        return_proba=True,
     )
 
     # Stop recording
@@ -183,9 +179,9 @@ def test_train_predict_performance(
         # Generate sample data
         schema_dict, sample_data = generate_schema_and_data(num_rows, num_features)
 
-        for f in schema_dict['features']:
-            if f['dataType'] == 'CATEGORICAL':
-                sample_data[f['name']] = sample_data[f['name']].astype(str)
+        for f in schema_dict["features"]:
+            if f["dataType"] == "CATEGORICAL":
+                sample_data[f["name"]] = sample_data[f["name"]].astype(str)
 
         # save schema dict and train data from where the training workflow will
         # read them
@@ -200,7 +196,7 @@ def test_train_predict_performance(
             train_dir,
         )
 
-        sample_data.drop(columns=[schema_dict['target']['name']], inplace=True)
+        sample_data.drop(columns=[schema_dict["target"]["name"]], inplace=True)
 
         input_schema_dir, train_dir = store_schema_and_data(
             tmpdir, schema_dict, sample_data
@@ -229,10 +225,7 @@ def test_train_predict_performance(
             prediction_time,
             prediction_memory,
         ) = run_prediction_and_record(
-            tmpdir,
-            results["predictor_dir_path"],
-            train_dir,
-            input_schema_dir
+            tmpdir, results["predictor_dir_path"], train_dir, input_schema_dir
         )
 
         # Assert that the predictions file is saved in the correct path

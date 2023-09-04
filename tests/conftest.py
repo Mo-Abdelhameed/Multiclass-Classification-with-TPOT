@@ -148,7 +148,7 @@ def sample_train_data(sample_data):
 def sample_test_data(sample_data):
     """Fixture to create a larger sample DataFrame for testing"""
     n_test = int(len(sample_data) * 0.2)
-    sample_data.drop(columns='target_field', inplace=True)
+    sample_data.drop(columns="target_field", inplace=True)
     return sample_data.tail(n_test)
 
 
@@ -227,8 +227,6 @@ def predictions_df():
     # Subtract each probability from 1 to create a complementary probability
     probabilities_C = [1 - p for p in summ]
 
-
-
     # Create a DataFrame with an 'id' column and three class probability
     # columns 'A', 'B' and 'C'
     df = pd.DataFrame(
@@ -241,7 +239,7 @@ def predictions_df():
             ],
             "0": probabilities_A,
             "1": probabilities_B,
-            "2": probabilities_C
+            "2": probabilities_C,
         }
     )
     return df

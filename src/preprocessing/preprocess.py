@@ -1,18 +1,22 @@
 import os
+from typing import Any, Dict, Tuple
+
 import pandas as pd
-from typing import Dict, Tuple, Any
-from schema.data_schema import MulticlassClassificationSchema
-from sklearn.preprocessing import StandardScaler
 from feature_engine.encoding import OneHotEncoder
-from joblib import dump, load
-from config import paths
 from imblearn.over_sampling import SMOTE
+from joblib import dump, load
+from sklearn.preprocessing import StandardScaler
+
+from config import paths
 from logger import get_logger
+from schema.data_schema import MulticlassClassificationSchema
 
-logger = get_logger(task_name='preprocess')
+logger = get_logger(task_name="preprocess")
 
 
-def impute_numeric(input_data: pd.DataFrame, column: str, value='median') -> Tuple[pd.DataFrame, Any]:
+def impute_numeric(
+    input_data: pd.DataFrame, column: str, value="median"
+) -> Tuple[pd.DataFrame, Any]:
     """
     Imputes the missing numeric values in the given dataframe column based on the parameter 'value'.
 
@@ -27,17 +31,19 @@ def impute_numeric(input_data: pd.DataFrame, column: str, value='median') -> Tup
 
     if column not in input_data.columns:
         return input_data, None
-    if value == 'mean':
+    if value == "mean":
         value = input_data[column].mean()
-    elif value == 'median':
+    elif value == "median":
         value = input_data[column].median()
-    elif value == 'mode':
+    elif value == "mode":
         value = input_data[column].mode().iloc[0]
     input_data[column].fillna(value=value, inplace=True)
     return input_data, value
 
 
-def impute_categorical(input_data: pd.DataFrame, column: str) -> Tuple[pd.DataFrame, Any]:
+def impute_categorical(
+    input_data: pd.DataFrame, column: str
+) -> Tuple[pd.DataFrame, Any]:
     """
     Imputes the missing categorical values in the given dataframe column.
     If the percentage of missing values in the column is greater than 0.1, imputation is done using the word "Missing".
@@ -54,7 +60,7 @@ def impute_categorical(input_data: pd.DataFrame, column: str) -> Tuple[pd.DataFr
         return input_data, None
     perc = percentage_of_missing_values(input_data)
     if column in perc and perc[column] > 10:
-        value = 'Missing'
+        value = "Missing"
     else:
         value = input_data[column].mode().iloc[0]
     input_data[column].fillna(value=value, inplace=True)
@@ -72,19 +78,27 @@ def percentage_of_missing_values(input_data: pd.DataFrame) -> Dict:
         A dictionary of column names as keys and the percentage of missing values as values.
     """
     columns_with_missing_values = input_data.columns[input_data.isna().any()]
-    return (input_data[columns_with_missing_values].isna().mean().sort_values(ascending=False) * 100).to_dict()
+    return (
+        input_data[columns_with_missing_values]
+        .isna()
+        .mean()
+        .sort_values(ascending=False)
+        * 100
+    ).to_dict()
 
 
-def encode(input_data: pd.DataFrame, schema: MulticlassClassificationSchema, encoder=None) -> pd.DataFrame:
+def encode(
+    input_data: pd.DataFrame, schema: MulticlassClassificationSchema, encoder=None
+) -> pd.DataFrame:
     """
     Performs one-hot encoding for the top 3 categories on categorical features of a given dataframe.
 
     Args:
         input_data (pd.DataFrame): The dataframe to be processed.
         schema (MulticlassClassificationSchema): The schema of the given data.
-        encoder: Indicates if instantiating a new encoder is required or not. 
-    
-    Returns: 
+        encoder: Indicates if instantiating a new encoder is required or not.
+
+    Returns:
         A dataframe after performing one-hot encoding
     """
     cat_features = schema.categorical_features
@@ -100,12 +114,14 @@ def encode(input_data: pd.DataFrame, schema: MulticlassClassificationSchema, enc
         encoder.fit(input_data)
         input_data = encoder.transform(input_data)
         dump(encoder, paths.ENCODER_FILE)
-    except ValueError as e:
-        logger.info('No categorical variables in the data. No encoding performed!')
+    except ValueError:
+        logger.info("No categorical variables in the data. No encoding performed!")
     return input_data
 
 
-def normalize(input_data: pd.DataFrame, schema: MulticlassClassificationSchema, scaler=None) -> pd.DataFrame:
+def normalize(
+    input_data: pd.DataFrame, schema: MulticlassClassificationSchema, scaler=None
+) -> pd.DataFrame:
     """
     Performs z-score normalization on numeric features of a given dataframe.
 
@@ -134,7 +150,7 @@ def normalize(input_data: pd.DataFrame, schema: MulticlassClassificationSchema, 
 
 
 def handle_class_imbalance(
-        transformed_data: pd.DataFrame, transformed_labels: pd.Series
+    transformed_data: pd.DataFrame, transformed_labels: pd.Series
 ) -> Tuple[pd.DataFrame, pd.Series]:
     """
     Handle class imbalance using SMOTE.

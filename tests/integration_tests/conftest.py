@@ -1,4 +1,5 @@
 import os
+
 import pytest
 
 
@@ -31,5 +32,3 @@ def docker_img_build_perf_results_path(performance_test_results_dir_path):
         performance_test_results_dir_path, "docker_img_build_performance_results.csv"
     )
     return str(file_path)
-
-

@@ -39,5 +39,3 @@ def test_infer_endpoint_integration(
         response_data["predictions"][0]["predictedClass"]
         in schema_provider.target_classes
     )
-
-

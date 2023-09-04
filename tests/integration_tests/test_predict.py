@@ -1,5 +1,7 @@
 import os
+
 import pandas as pd
+
 from predict import run_batch_predictions
 from train import run_training
 
@@ -46,7 +48,7 @@ def test_integration_run_batch_predictions(
         train_dir=train_dir,
         predictor_dir_path=predictor_dir_path,
     )
-    predictions_file_path = os.path.join(os.path.dirname(__file__), 'predictions.csv')
+    predictions_file_path = os.path.join(os.path.dirname(__file__), "predictions.csv")
 
     # Run the prediction process
     run_batch_predictions(
@@ -58,10 +60,12 @@ def test_integration_run_batch_predictions(
     )
 
     # Assert that the predictions file is saved in the correct path
-    assert os.path.isfile(os.path.join(os.path.dirname(__file__), 'predictions.csv'))
+    assert os.path.isfile(os.path.join(os.path.dirname(__file__), "predictions.csv"))
 
     # Load predictions and validate the format
-    predictions_df = pd.read_csv(os.path.join(os.path.dirname(__file__), 'predictions.csv'))
+    predictions_df = pd.read_csv(
+        os.path.join(os.path.dirname(__file__), "predictions.csv")
+    )
 
     # Assert that predictions dataframe has the right columns
     assert schema_provider.id in predictions_df.columns
@@ -71,4 +75,4 @@ def test_integration_run_batch_predictions(
     # Assert that the number of rows in the predictions matches the number
     # of rows in the test data
     assert len(predictions_df) == len(sample_test_data)
-    os.remove(os.path.join(os.path.dirname(__file__), 'predictions.csv'))
+    os.remove(os.path.join(os.path.dirname(__file__), "predictions.csv"))

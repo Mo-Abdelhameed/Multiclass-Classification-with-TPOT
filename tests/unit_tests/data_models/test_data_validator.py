@@ -1,9 +1,6 @@
-from typing import Any
-
 import pandas as pd
 import pytest
-
-from schema.data_schema import MulticlassClassificationSchema
+from typing import Any
 from src.data_models.data_validator import validate_data
 
 

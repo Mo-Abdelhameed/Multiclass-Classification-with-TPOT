@@ -2,12 +2,14 @@
 This script contains utility functions/classes that are used in serve.py
 """
 import uuid
-import pandas as pd
 from typing import Any, Dict, Tuple
+
+import pandas as pd
+
+from Classifier import Classifier
 from config import paths
 from data_models.data_validator import validate_data
 from logger import get_logger, log_error
-from Classifier import Classifier
 from predict import create_predictions_dataframe
 from preprocessing.pipeline import run_pipeline
 from schema.data_schema import load_saved_schema
@@ -98,7 +100,9 @@ def transform_req_data_and_make_predictions(
     data = run_pipeline(data, model_resources.data_schema, training=False)
 
     logger.info("Making predictions...")
-    predictions_arr = Classifier.predict_with_model(model_resources.predictor_model, data, return_proba=True)
+    predictions_arr = Classifier.predict_with_model(
+        model_resources.predictor_model, data, return_proba=True
+    )
     logger.info("Converting predictions array into dataframe...")
     predictions_df = create_predictions_dataframe(
         predictions_arr=predictions_arr,
@@ -106,7 +110,8 @@ def transform_req_data_and_make_predictions(
         prediction_field_name=model_resources.data_schema.target,
         ids=ids,
         id_field_name=model_resources.data_schema.id,
-        return_probs=True)
+        return_probs=True,
+    )
 
     logger.info("Converting predictions dataframe into response dictionary...")
     predictions_response = create_predictions_response(
@@ -140,7 +145,8 @@ def create_predictions_response(
                 "sampleId": sample[data_schema.id],
                 "predictedClass": str(sample["__predicted_class"]),
                 "predictedProbabilities": [
-                    round(sample[class_names[i]], 5) for i in range(len(data_schema.target_classes))
+                    round(sample[class_names[i]], 5)
+                    for i in range(len(data_schema.target_classes))
                 ],
             }
         )

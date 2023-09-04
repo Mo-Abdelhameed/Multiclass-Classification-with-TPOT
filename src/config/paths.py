@@ -26,11 +26,11 @@ MODEL_PATH = os.path.join(MODEL_INPUTS_OUTPUTS, "model")
 # Path to artifacts directory inside model directory
 MODEL_ARTIFACTS_PATH = os.path.join(MODEL_PATH, "artifacts")
 # Path to the scaler object used during training
-SCALER_FILE = os.path.join(MODEL_ARTIFACTS_PATH, 'scaler.joblib')
+SCALER_FILE = os.path.join(MODEL_ARTIFACTS_PATH, "scaler.joblib")
 # Path to the encoder object used during training
-ENCODER_FILE = os.path.join(MODEL_ARTIFACTS_PATH, 'encoder.joblib')
+ENCODER_FILE = os.path.join(MODEL_ARTIFACTS_PATH, "encoder.joblib")
 # Path to imputation file containing values used during training
-IMPUTATION_FILE_PATH = os.path.join(MODEL_ARTIFACTS_PATH, 'imputations.joblib')
+IMPUTATION_FILE_PATH = os.path.join(MODEL_ARTIFACTS_PATH, "imputations.joblib")
 # Path to saved schema in artifacts directory
 SAVED_SCHEMA_DIR_PATH = os.path.join(MODEL_ARTIFACTS_PATH, "schema")
 # Name of the preprocessing pipeline file
@@ -44,7 +44,7 @@ OUTPUT_DIR = os.path.join(MODEL_INPUTS_OUTPUTS, "outputs")
 PREDICTIONS_DIR = os.path.join(OUTPUT_DIR, "predictions")
 # Name of the file containing the predictions
 PREDICTIONS_FILE_PATH = os.path.join(PREDICTIONS_DIR, "predictions.csv")
-MODEL_CONFIG_FILE_PATH = os.path.join(ROOT_DIR, 'model_config.json')
+MODEL_CONFIG_FILE_PATH = os.path.join(ROOT_DIR, "model_config.json")
 # Path to logs directory inside outputs directory
 ERRORS_DIR = os.path.join(OUTPUT_DIR, "errors")
 # Error file paths

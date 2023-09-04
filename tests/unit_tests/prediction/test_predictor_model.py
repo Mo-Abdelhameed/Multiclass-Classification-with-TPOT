@@ -1,9 +1,11 @@
 import os
+
 import numpy as np
 import pytest
 from sklearn.exceptions import NotFittedError
+
 from src.Classifier import Classifier
-from src.config.paths import PREDICTIONS_FILE_PATH, PREDICTOR_DIR_PATH
+from src.config.paths import PREDICTOR_DIR_PATH
 from src.preprocessing.pipeline import run_pipeline
 
 
@@ -23,15 +25,19 @@ def test_train_predict_model(sample_train_data, sample_test_data, schema_provide
     sample_test_data = sample_test_data.drop(columns=schema_provider.id)
     sample_test_data = run_pipeline(sample_test_data, schema_provider, training=False)
 
-    predictions = Classifier.predict_with_model(classifier, sample_test_data, return_proba=False)
+    predictions = Classifier.predict_with_model(
+        classifier, sample_test_data, return_proba=False
+    )
 
     assert predictions.shape == (sample_test_data.shape[0],)
 
-    proba_predictions = Classifier.predict_with_model(classifier, sample_test_data, return_proba=True)
+    proba_predictions = Classifier.predict_with_model(
+        classifier, sample_test_data, return_proba=True
+    )
     assert proba_predictions.shape == (sample_test_data.shape[0], 3)
 
     classifier.save(PREDICTOR_DIR_PATH)
-    assert os.path.exists(os.path.join(PREDICTOR_DIR_PATH, 'predictor.joblib'))
+    assert os.path.exists(os.path.join(PREDICTOR_DIR_PATH, "predictor.joblib"))
 
 
 def test_save_load_model(tmpdir, sample_train_data, sample_test_data, schema_provider):
@@ -41,7 +47,9 @@ def test_save_load_model(tmpdir, sample_train_data, sample_test_data, schema_pro
     # Specify the file path
     model_dir_path = tmpdir.mkdir("model")
     target = sample_train_data[schema_provider.target]
-    sample_train_data = sample_train_data.drop(columns=[schema_provider.target, schema_provider.id])
+    sample_train_data = sample_train_data.drop(
+        columns=[schema_provider.target, schema_provider.id]
+    )
     sample_train_data = run_pipeline(sample_train_data, schema_provider, training=True)
     sample_train_data[schema_provider.target] = target
     classifier = Classifier(sample_train_data, schema_provider)
@@ -56,10 +64,14 @@ def test_save_load_model(tmpdir, sample_train_data, sample_test_data, schema_pro
     sample_test_data = sample_test_data.drop(columns=schema_provider.id)
     sample_test_data = run_pipeline(sample_test_data, schema_provider, training=False)
     # Test predictions
-    predictions = Classifier.predict_with_model(loaded_clf, sample_test_data, return_proba=False)
+    predictions = Classifier.predict_with_model(
+        loaded_clf, sample_test_data, return_proba=False
+    )
     assert np.array_equal(predictions, classifier.predict(sample_test_data))
 
-    proba_predictions = Classifier.predict_with_model(loaded_clf, sample_test_data, return_proba=True)
+    proba_predictions = Classifier.predict_with_model(
+        loaded_clf, sample_test_data, return_proba=True
+    )
     assert np.array_equal(proba_predictions, classifier.predict_proba(sample_test_data))
 
 
@@ -88,7 +100,9 @@ def test_predict_with_model(sample_train_data, schema_provider, sample_test_data
     and type.
     """
     target = sample_train_data[schema_provider.target]
-    sample_train_data = sample_train_data.drop(columns=[schema_provider.target, schema_provider.id])
+    sample_train_data = sample_train_data.drop(
+        columns=[schema_provider.target, schema_provider.id]
+    )
     sample_train_data = run_pipeline(sample_train_data, schema_provider, training=True)
     sample_train_data[schema_provider.target] = target
     classifier = Classifier(sample_train_data, schema_provider)
@@ -96,7 +110,9 @@ def test_predict_with_model(sample_train_data, schema_provider, sample_test_data
     sample_test_data = sample_test_data.drop(columns=schema_provider.id)
     sample_test_data = run_pipeline(sample_test_data, schema_provider, training=False)
 
-    predictions = Classifier.predict_with_model(classifier, sample_test_data, return_proba=True)
+    predictions = Classifier.predict_with_model(
+        classifier, sample_test_data, return_proba=True
+    )
 
     assert isinstance(predictions, np.ndarray)
     assert predictions.shape[0] == sample_test_data.shape[0]
@@ -109,7 +125,9 @@ def test_save_predictor_model(tmpdir, sample_train_data, schema_provider):
     """
     model_dir_path = os.path.join(tmpdir, "model")
     target = sample_train_data[schema_provider.target]
-    sample_train_data = sample_train_data.drop(columns=[schema_provider.target, schema_provider.id])
+    sample_train_data = sample_train_data.drop(
+        columns=[schema_provider.target, schema_provider.id]
+    )
     sample_train_data = run_pipeline(sample_train_data, schema_provider, training=True)
     sample_train_data[schema_provider.target] = target
     classifier = Classifier(sample_train_data, schema_provider)

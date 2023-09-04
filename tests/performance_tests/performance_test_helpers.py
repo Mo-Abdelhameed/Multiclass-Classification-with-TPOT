@@ -106,14 +106,20 @@ def generate_schema_and_data(rows: int, columns: int) -> Tuple[Dict, pd.DataFram
         if feature["dataType"] == "NUMERIC":
             # if feature is nullable, create an array with some nulls
             if feature["nullable"]:
-                data = np.where(np.random.rand(rows) > 0.05, np.random.rand(rows), np.nan)
+                data = np.where(
+                    np.random.rand(rows) > 0.05, np.random.rand(rows), np.nan
+                )
             else:
                 data = np.random.rand(rows)
         else:
             if feature["nullable"]:
-                data = np.where(np.random.rand(rows) > 0.05, np.random.choice(feature['categories']), np.nan)
+                data = np.where(
+                    np.random.rand(rows) > 0.05,
+                    np.random.choice(feature["categories"]),
+                    np.nan,
+                )
             else:
-                data = np.random.choice(feature['categories'])
+                data = np.random.choice(feature["categories"])
 
         data_dict[feature["name"]] = data
 

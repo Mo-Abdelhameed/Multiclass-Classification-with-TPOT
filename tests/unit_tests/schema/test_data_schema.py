@@ -1,12 +1,14 @@
 import os
+
 import pytest
+
 from config.paths import INPUT_SCHEMA_DIR
 from src.schema.data_schema import (
     SCHEMA_FILE_NAME,
+    MulticlassClassificationSchema,
     load_json_data_schema,
     load_saved_schema,
     save_schema,
-    MulticlassClassificationSchema,
 )
 
 
@@ -32,9 +34,24 @@ def test_init(schema_provider):
     assert schema.target == "target_field"
     assert schema.target_classes == ["0", "1", "2"]
     assert schema.numeric_features == ["numeric_feature_1", "numeric_feature_2"]
-    assert schema.categorical_features == ["categorical_feature_1", "categorical_feature_2"]
-    assert schema.features == ["numeric_feature_1", "numeric_feature_2", "categorical_feature_1", "categorical_feature_2"]
-    assert schema.all_fields == ["id", "target_field", "numeric_feature_1", "numeric_feature_2", "categorical_feature_1", "categorical_feature_2"]
+    assert schema.categorical_features == [
+        "categorical_feature_1",
+        "categorical_feature_2",
+    ]
+    assert schema.features == [
+        "numeric_feature_1",
+        "numeric_feature_2",
+        "categorical_feature_1",
+        "categorical_feature_2",
+    ]
+    assert schema.all_fields == [
+        "id",
+        "target_field",
+        "numeric_feature_1",
+        "numeric_feature_2",
+        "categorical_feature_1",
+        "categorical_feature_2",
+    ]
 
 
 def test_get_allowed_values_for_categorical_feature(schema_provider):
@@ -46,7 +63,9 @@ def test_get_allowed_values_for_categorical_feature(schema_provider):
     """
 
     # When
-    allowed_values = schema_provider.get_allowed_values_for_categorical_feature("categorical_feature_2")
+    allowed_values = schema_provider.get_allowed_values_for_categorical_feature(
+        "categorical_feature_2"
+    )
 
     # Then
     assert allowed_values == ["A", "B", "C", "D", "E"]
