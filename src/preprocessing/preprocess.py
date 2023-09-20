@@ -26,7 +26,7 @@ def impute_numeric(
         value (str): The value to use when imputing the column. Can only be one of ['mean', 'median', 'mode']
 
     Returns:
-        A dataframe after imputation
+        Tuple[pd.DataFrame, Any]:  Dataframe after imputation and the value used for imputation
     """
 
     if column not in input_data.columns:
@@ -54,7 +54,7 @@ def impute_categorical(
         column (str): The name of the column to be imputed.
 
     Returns:
-        A dataframe after imputation
+        Tuple[pd.DataFrame, Any]:  Dataframe after imputation and the value used for imputation
     """
     if column not in input_data.columns:
         return input_data, None
