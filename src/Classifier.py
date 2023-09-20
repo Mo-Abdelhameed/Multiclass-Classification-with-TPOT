@@ -166,7 +166,7 @@ class Classifier:
         Args:
             inputs (pandas.DataFrame): The input data.
         Returns:
-            Union[pd.DataFrame, pd.Series]: The output predictions.
+            np.ndarray: The output predictions.
         """
         return self.tpot.predict(inputs)
 
@@ -219,7 +219,7 @@ class Classifier:
             return_proba (bool): If true, returns the probabilities of the classes.
 
         Returns:
-            Union[pd.DataFrame, pd.Series]: The output predictions.
+            np.ndarray: The output predictions.
         """
 
         return (
